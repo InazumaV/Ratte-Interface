@@ -1,7 +1,7 @@
 package core
 
 import (
-	params2 "Ratte-Core-Interface/params"
+	params2 "github.com/Yuzuki616/Ratte-Interface/params"
 )
 
 type AddUsersParams struct {

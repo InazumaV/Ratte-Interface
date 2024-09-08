@@ -1,7 +1,7 @@
 package panel
 
 import (
-	"Ratte-Core-Interface/params"
+	"github.com/Yuzuki616/Ratte-Interface/params"
 )
 
 type UserInfo params.UserInfo

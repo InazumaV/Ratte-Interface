@@ -1,9 +1,9 @@
 package plugin
 
 import (
-	"Ratte-Core-Interface/core"
-	"Ratte-Core-Interface/panel"
 	"errors"
+	"github.com/Yuzuki616/Ratte-Interface/core"
+	"github.com/Yuzuki616/Ratte-Interface/panel"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-plugin"
 	"os/exec"
