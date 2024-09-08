@@ -15,6 +15,7 @@ var HandshakeConfig = plugin.HandshakeConfig{
 
 type Panel interface {
 	AddRemote(params *AddRemoteParams) *AddRemoteRsp
+	DelRemote(id int) error
 	GetNodeInfo(id int) *GetNodeInfoRsp
 	GetUserList(id int) *GetUserListRsp
 	ReportUserTraffic(p *ReportUserTrafficParams) error

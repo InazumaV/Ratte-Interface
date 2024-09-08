@@ -29,3 +29,15 @@ func (c *PluginClient) AddRemote(params *AddRemoteParams) (r *AddRemoteRsp) {
 	}
 	return
 }
+
+func (s *PluginServer) DelRemote(id int, _ any) {
+	_ = s.p.DelRemote(id)
+}
+
+func (c *PluginClient) DelRemote(id int) error {
+	err := c.call("DelRemote", id, new(any))
+	if err != nil {
+		return err
+	}
+	return nil
+}
