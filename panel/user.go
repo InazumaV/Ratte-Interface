@@ -7,6 +7,7 @@ import (
 type UserInfo params.UserInfo
 
 type GetUserListRsp struct {
+	Hash  string
 	Users []UserInfo
 	Err   error
 }

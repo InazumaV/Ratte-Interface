@@ -7,6 +7,7 @@ import (
 type NodeInfo params.NodeInfo
 
 type GetNodeInfoRsp struct {
+	Hash     string
 	NodeInfo NodeInfo
 	Err      error
 }
