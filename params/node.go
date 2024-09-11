@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-type NodeInfo struct {
+type CommonNodeInfo struct {
 	Type        string
 	VMess       *VMessNode
 	VLess       *VLessNode
@@ -13,10 +13,9 @@ type NodeInfo struct {
 	Trojan      *TrojanNode
 	Hysteria    *HysteriaNode
 	Other       *OtherNode
-	ExpandParams
 }
 
-func (n *NodeInfo) String() string {
+func (n *CommonNodeInfo) String() string {
 	switch n.Type {
 	case "VMess":
 		return fmt.Sprintf("VMess: %v", n.VMess)
@@ -42,6 +41,7 @@ type CommonNode struct {
 	EnableDNS     bool
 	Rules         []string
 	Limit         LimitOptions
+	ExpandParams
 }
 
 type HysteriaNode struct {
@@ -54,27 +54,23 @@ type HysteriaNode struct {
 // VMessNode is vmess node info
 type VMessNode struct {
 	CommonNode
-	Tls                 int             `json:"tls"`
-	TlsSettings         TlsSettings     `json:"tls_settings"`
-	TlsSettingsBack     *TlsSettings    `json:"tlsSettings"`
-	Network             string          `json:"network"`
-	NetworkSettings     json.RawMessage `json:"network_settings"`
-	NetworkSettingsBack json.RawMessage `json:"networkSettings"`
-	ServerName          string          `json:"server_name"`
+	TlsType         int
+	Network         string
+	ServerName      string
+	TlsSettings     TlsSettings
+	NetworkSettings json.RawMessage
 }
 
 // VLessNode is vless node info
 type VLessNode struct {
 	CommonNode
-	Tls                 int             `json:"tls"`
-	TlsSettings         TlsSettings     `json:"tls_settings"`
-	TlsSettingsBack     *TlsSettings    `json:"tlsSettings"`
-	Network             string          `json:"network"`
-	NetworkSettings     json.RawMessage `json:"network_settings"`
-	NetworkSettingsBack json.RawMessage `json:"networkSettings"`
-	ServerName          string          `json:"server_name"`
-	Flow                string          `json:"flow"`
-	RealityConfig       RealityConfig   `json:"-"`
+	TlsType         int
+	Flow            string
+	Network         string
+	ServerName      string
+	RealityConfig   RealityConfig
+	TlsSettings     TlsSettings
+	NetworkSettings json.RawMessage
 }
 
 type TlsSettings struct {

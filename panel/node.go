@@ -12,16 +12,16 @@ const (
 	Tls   = 1
 )
 
-type NodeInfo params.NodeInfo
+type NodeInfo params.CommonNodeInfo
 
 func (i *NodeInfo) TlsType() int {
 	switch i.Type {
 	case "vmess":
-		if i.VMess.Tls == Tls {
+		if i.VMess.TlsType == Tls {
 			return Tls
 		}
 	case "vless":
-		if i.VLess.Tls == Tls {
+		if i.VLess.TlsType == Tls {
 			return Tls
 		}
 		return NoTls
