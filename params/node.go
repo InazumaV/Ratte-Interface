@@ -13,6 +13,7 @@ type CommonNodeInfo struct {
 	Trojan      *TrojanNode
 	Hysteria    *HysteriaNode
 	Other       *OtherNode
+	ExpandParams
 }
 
 func (n *CommonNodeInfo) String() string {
@@ -99,7 +100,6 @@ type OtherNode struct {
 	Name    string
 	TlsType int
 	CommonNode
-	ExpandParams
 }
 
 type LimitOptions struct {
