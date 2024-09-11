@@ -1,15 +1,37 @@
 package panel
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
+	"fmt"
 	"github.com/Yuzuki616/Ratte-Interface/params"
 )
 
-type UserInfo params.UserInfo
+type UserInfo struct {
+	HashOrKey string
+	params.UserInfo
+}
+
+func (u *UserInfo) GetHashOrKey() string {
+	if len(u.HashOrKey) != 0 {
+		return u.HashOrKey
+	}
+	s := sha256.Sum256([]byte(fmt.Sprintf("%x", fmt.Sprintf("%v", u))))
+	return hex.EncodeToString(s[:])
+}
 
 type GetUserListRsp struct {
 	Hash  string
 	Users []UserInfo
 	Err   error
+}
+
+func (g *GetUserListRsp) GetHash() string {
+	if len(g.Hash) > 0 {
+		return g.Hash
+	}
+	s := sha256.Sum256([]byte(fmt.Sprintf("%x", fmt.Sprintf("%v", g.Users))))
+	return hex.EncodeToString(s[:])
 }
 
 func (s *PluginServer) GetUserList(id int, r *GetUserListRsp) error {

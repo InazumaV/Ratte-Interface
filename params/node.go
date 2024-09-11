@@ -4,7 +4,7 @@ import "encoding/json"
 
 type NodeInfo struct {
 	Type        string
-	VAllss      *VAllssNode
+	VMess       *VMessNode
 	Shadowsocks *ShadowsocksNode
 	Trojan      *TrojanNode
 	Hysteria    *HysteriaNode
@@ -30,8 +30,8 @@ type HysteriaNode struct {
 	Obfs     string
 }
 
-// VAllssNode is vmess and vless node info
-type VAllssNode struct {
+// VMessNode is vmess node info
+type VMessNode struct {
 	CommonNode
 	Tls                 int             `json:"tls"`
 	TlsSettings         TlsSettings     `json:"tls_settings"`
@@ -40,10 +40,20 @@ type VAllssNode struct {
 	NetworkSettings     json.RawMessage `json:"network_settings"`
 	NetworkSettingsBack json.RawMessage `json:"networkSettings"`
 	ServerName          string          `json:"server_name"`
+}
 
-	// vless only
-	Flow          string        `json:"flow"`
-	RealityConfig RealityConfig `json:"-"`
+// VLessNode is vless node info
+type VLessNode struct {
+	CommonNode
+	Tls                 int             `json:"tls"`
+	TlsSettings         TlsSettings     `json:"tls_settings"`
+	TlsSettingsBack     *TlsSettings    `json:"tlsSettings"`
+	Network             string          `json:"network"`
+	NetworkSettings     json.RawMessage `json:"network_settings"`
+	NetworkSettingsBack json.RawMessage `json:"networkSettings"`
+	ServerName          string          `json:"server_name"`
+	Flow                string          `json:"flow"`
+	RealityConfig       RealityConfig   `json:"-"`
 }
 
 type TlsSettings struct {
