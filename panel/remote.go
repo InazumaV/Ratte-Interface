@@ -8,6 +8,7 @@ type AddRemoteParams struct {
 	Baseurl  string
 	NodeId   int
 	NodeType string
+	Key      string
 	Timeout  int
 	params.ExpandParams
 }
