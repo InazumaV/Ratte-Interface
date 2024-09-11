@@ -4,9 +4,10 @@ import (
 	params2 "github.com/Yuzuki616/Ratte-Interface/params"
 )
 
+type UserInfo params2.UserInfo
 type AddUsersParams struct {
 	NodeName string
-	Users    []params2.UserInfo
+	Users    []UserInfo
 	params2.ExpandParams
 }
 

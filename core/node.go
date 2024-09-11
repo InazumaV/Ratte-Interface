@@ -4,8 +4,10 @@ import (
 	"github.com/Yuzuki616/Ratte-Interface/params"
 )
 
+type NodeInfo params.NodeInfo
+
 type AddNodeParams struct {
-	params.NodeInfo
+	NodeInfo
 	ExpandOptions []byte
 }
 
