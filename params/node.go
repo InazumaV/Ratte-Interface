@@ -8,6 +8,7 @@ import (
 type NodeInfo struct {
 	Type        string
 	VMess       *VMessNode
+	VLess       *VLessNode
 	Shadowsocks *ShadowsocksNode
 	Trojan      *TrojanNode
 	Hysteria    *HysteriaNode
@@ -99,6 +100,8 @@ type ShadowsocksNode struct {
 type TrojanNode CommonNode
 
 type OtherNode struct {
+	Name    string
+	TlsType int
 	CommonNode
 	ExpandParams
 }

@@ -7,7 +7,35 @@ import (
 	"github.com/Yuzuki616/Ratte-Interface/params"
 )
 
+const (
+	NoTls = 0
+	Tls   = 1
+)
+
 type NodeInfo params.NodeInfo
+
+func (i *NodeInfo) TlsType() int {
+	switch i.Type {
+	case "vmess":
+		if i.VMess.Tls == Tls {
+			return Tls
+		}
+	case "vless":
+		if i.VLess.Tls == Tls {
+			return Tls
+		}
+		return NoTls
+	case "trojan":
+		return Tls
+	case "hysteria":
+		return Tls
+	case i.Other.Name:
+		return i.Other.TlsType
+	default:
+		return NoTls
+	}
+	return NoTls
+}
 
 type GetNodeInfoRsp struct {
 	Hash     string
