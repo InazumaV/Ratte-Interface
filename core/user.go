@@ -28,8 +28,8 @@ type GetUserTrafficParams struct {
 	Username string
 }
 type GetUserTrafficResponse struct {
-	up   int64
-	down int64
+	Up   int64
+	Down int64
 	Err  error
 }
 
