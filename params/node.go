@@ -1,6 +1,9 @@
 package params
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"fmt"
+)
 
 type NodeInfo struct {
 	Type        string
@@ -10,6 +13,23 @@ type NodeInfo struct {
 	Hysteria    *HysteriaNode
 	Other       *OtherNode
 	ExpandParams
+}
+
+func (n *NodeInfo) String() string {
+	switch n.Type {
+	case "VMess":
+		return fmt.Sprintf("VMess: %v", n.VMess)
+	case "Shadowsocks":
+		return fmt.Sprintf("Shadowsocks: %v", n.Shadowsocks)
+	case "Trojan":
+		return fmt.Sprintf("Trojan: %v", n.Trojan)
+	case "Hysteria":
+		return fmt.Sprintf("Hysteria: %v", n.Hysteria)
+	case "Other":
+		return fmt.Sprintf("Other: %v", n.Other)
+	default:
+		return fmt.Sprintf("%v", *n)
+	}
 }
 
 type CommonNode struct {
