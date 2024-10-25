@@ -1,14 +1,25 @@
 package plugin
 
-import "github.com/hashicorp/go-plugin"
+import (
+	"errors"
+	"github.com/Yuzuki616/Ratte-Interface/core"
+	"github.com/Yuzuki616/Ratte-Interface/panel"
+	"github.com/hashicorp/go-plugin"
+)
 
 type Server struct {
 	c    *Config
 	impl any
 }
 
-func NewServer(c *Config, impl any) *Server {
-	return &Server{c: c, impl: impl}
+func NewServer(c *Config, impl any) (*Server, error) {
+	switch impl.(type) {
+	case core.Core:
+	case panel.Panel:
+	default:
+		return nil, errors.New("unknown plugin type")
+	}
+	return &Server{c: c, impl: impl}, nil
 }
 
 func (s *Server) Run() error {

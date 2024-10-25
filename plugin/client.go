@@ -11,6 +11,7 @@ type Client[T any] struct {
 }
 
 func NewClient[T any](c *Config) (client *Client[T], err error) {
+	client = new(Client[T])
 	hs, err := c.getHandshake()
 	if err != nil {
 		return nil, err
@@ -27,19 +28,22 @@ func NewClient[T any](c *Config) (client *Client[T], err error) {
 	})
 	rpc, err := cli.Client()
 	if err != nil {
-		return client, err
+		return nil, err
 	}
 	v, err := rpc.Dispense(pluginName)
 	if err != nil {
-		return client, err
+		return nil, err
+	}
+	if v == nil {
+		return nil, errors.New("get object failed, please check log")
 	}
 	switch v.(type) {
 	case T:
 		client.obj = v.(T)
 	default:
-		return client, errors.New("unknown plugin type")
+		return nil, errors.New("unknown plugin type")
 	}
-	return
+	return client, nil
 }
 
 func (c *Client[T]) RawClient() *plugin.Client {
