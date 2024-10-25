@@ -2,6 +2,8 @@ package plugin
 
 import (
 	"errors"
+	"github.com/Yuzuki616/Ratte-Interface/core"
+	"github.com/Yuzuki616/Ratte-Interface/panel"
 	"github.com/hashicorp/go-plugin"
 )
 
@@ -16,13 +18,18 @@ func NewClient[T any](c *Config) (client *Client[T], err error) {
 	if err != nil {
 		return nil, err
 	}
-	pm, err := c.getPluginMap(nil)
-	if err != nil {
-		return nil, err
+	name := ""
+	switch c.Type {
+	case CoreType:
+		name = core.PluginName
+	case PanelType:
+		name = panel.PluginName
+	default:
+		return nil, errors.New("the plugin type is not supported")
 	}
 	cli := plugin.NewClient(&plugin.ClientConfig{
 		HandshakeConfig: hs,
-		Plugins:         pm,
+		Plugins:         map[string]plugin.Plugin{},
 		Cmd:             c.Cmd,
 		Logger:          c.Logger,
 	})
@@ -30,7 +37,7 @@ func NewClient[T any](c *Config) (client *Client[T], err error) {
 	if err != nil {
 		return nil, err
 	}
-	v, err := rpc.Dispense(pluginName)
+	v, err := rpc.Dispense(name)
 	if err != nil {
 		return nil, err
 	}

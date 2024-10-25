@@ -8,18 +8,25 @@ import (
 )
 
 type Server struct {
-	c    *Config
-	impl any
+	c  *Config
+	pm map[string]plugin.Plugin
 }
 
 func NewServer(c *Config, impl any) (*Server, error) {
+	var pm map[string]plugin.Plugin
 	switch impl.(type) {
 	case core.Core:
+		pm = map[string]plugin.Plugin{
+			core.PluginName: core.NewPlugin(impl.(core.Core)),
+		}
 	case panel.Panel:
+		pm = map[string]plugin.Plugin{
+			panel.PluginName: panel.NewPlugin(impl.(panel.Panel)),
+		}
 	default:
 		return nil, errors.New("unknown plugin type")
 	}
-	return &Server{c: c, impl: impl}, nil
+	return &Server{c: c, pm: pm}, nil
 }
 
 func (s *Server) Run() error {
@@ -27,13 +34,9 @@ func (s *Server) Run() error {
 	if err != nil {
 		return err
 	}
-	pm, err := s.c.getPluginMap(s.impl)
-	if err != nil {
-		return err
-	}
 	plugin.Serve(&plugin.ServeConfig{
 		HandshakeConfig: hs,
-		Plugins:         pm,
+		Plugins:         s.pm,
 		Logger:          s.c.Logger,
 	})
 	return nil

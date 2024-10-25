@@ -10,9 +10,8 @@ import (
 )
 
 const (
-	pluginName = "plugin"
-	CoreType   = "core"
-	PanelType  = "node"
+	CoreType  = "core"
+	PanelType = "node"
 )
 
 type Config struct {
@@ -29,28 +28,5 @@ func (c *Config) getHandshake() (plugin.HandshakeConfig, error) {
 		return panel.HandshakeConfig, nil
 	default:
 		return plugin.HandshakeConfig{}, errors.New("the plugin type is not supported")
-	}
-}
-
-func (c *Config) getPluginMap(impl any) (map[string]plugin.Plugin, error) {
-	switch c.Type {
-	case CoreType:
-		c := &core.Plugin{}
-		if impl != nil {
-			c = core.NewPlugin(impl.(core.Core))
-		}
-		return map[string]plugin.Plugin{
-			core.PluginName: c,
-		}, nil
-	case PanelType:
-		p := &panel.Plugin{}
-		if impl != nil {
-			p = panel.NewPlugin(impl.(panel.Panel))
-		}
-		return map[string]plugin.Plugin{
-			core.PluginName: p,
-		}, nil
-	default:
-		return nil, errors.New("the plugin type is not supported")
 	}
 }
