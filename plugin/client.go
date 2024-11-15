@@ -7,29 +7,39 @@ import (
 	"github.com/hashicorp/go-plugin"
 )
 
-type Client[T any] struct {
+type Client struct {
 	c   *plugin.Client
-	obj T
+	obj any
 }
 
-func NewClient[T any](c *Config) (client *Client[T], err error) {
-	client = new(Client[T])
-	hs, err := c.getHandshake()
-	if err != nil {
-		return nil, err
-	}
-	name := ""
-	switch c.Type {
-	case CoreType:
+const (
+	TypeCore  = 0
+	TypePanel = 1
+)
+
+func NewClient(Type int, c *Config) (client *Client, err error) {
+	var name string
+	var pm = map[string]plugin.Plugin{}
+	var hs = plugin.HandshakeConfig{}
+	switch Type {
+	case TypeCore:
 		name = core.PluginName
-	case PanelType:
+		hs = core.HandshakeConfig
+		pm = map[string]plugin.Plugin{
+			core.PluginName: core.NewPlugin(nil),
+		}
+	case TypePanel:
 		name = panel.PluginName
+		hs = panel.HandshakeConfig
+		pm = map[string]plugin.Plugin{
+			panel.PluginName: panel.NewPlugin(nil),
+		}
 	default:
 		return nil, errors.New("the plugin type is not supported")
 	}
 	cli := plugin.NewClient(&plugin.ClientConfig{
 		HandshakeConfig: hs,
-		Plugins:         map[string]plugin.Plugin{},
+		Plugins:         pm,
 		Cmd:             c.Cmd,
 		Logger:          c.Logger,
 	})
@@ -44,23 +54,20 @@ func NewClient[T any](c *Config) (client *Client[T], err error) {
 	if v == nil {
 		return nil, errors.New("get object failed, please check log")
 	}
-	switch v.(type) {
-	case T:
-		client.obj = v.(T)
-	default:
-		return nil, errors.New("unknown plugin type")
-	}
-	return client, nil
+	return &Client{
+		c:   cli,
+		obj: v,
+	}, nil
 }
 
-func (c *Client[T]) RawClient() *plugin.Client {
+func (c *Client) RawClient() *plugin.Client {
 	return c.c
 }
 
-func (c *Client[T]) Caller() T {
+func (c *Client) Caller() any {
 	return c.obj
 }
 
-func (c *Client[T]) Close() {
+func (c *Client) Close() {
 	c.c.Kill()
 }
