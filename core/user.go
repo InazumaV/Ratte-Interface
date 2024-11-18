@@ -11,11 +11,11 @@ type AddUsersParams struct {
 	params2.ExpandParams
 }
 
-func (s *PluginServer) AddUsers(params *AddUsersParams, err *error) error {
+func (s *PluginImplServer) AddUsers(params *AddUsersParams, err *error) error {
 	*err = s.core.AddUsers(params)
 	return nil
 }
-func (c *PluginClient) AddUsers(p *AddUsersParams) (err error) {
+func (c *PluginImplClient) AddUsers(p *AddUsersParams) (err error) {
 	err2 := c.call("AddUsers", p, &err)
 	if err2 != nil {
 		return err2
@@ -33,11 +33,11 @@ type GetUserTrafficResponse struct {
 	Err  error
 }
 
-func (s *PluginServer) GetUserTraffic(params *GetUserTrafficParams, rsp *GetUserTrafficResponse) error {
+func (s *PluginImplServer) GetUserTraffic(params *GetUserTrafficParams, rsp *GetUserTrafficResponse) error {
 	*rsp = *s.core.GetUserTraffic(params)
 	return nil
 }
-func (c *PluginClient) GetUserTraffic(p *GetUserTrafficParams) (rsp *GetUserTrafficResponse) {
+func (c *PluginImplClient) GetUserTraffic(p *GetUserTrafficParams) (rsp *GetUserTrafficResponse) {
 	rsp = &GetUserTrafficResponse{}
 	err := c.call("GetUserTraffic", p, rsp)
 	if err != nil {
@@ -51,11 +51,11 @@ type ResetUserTrafficParams struct {
 	Username string
 }
 
-func (s *PluginServer) ResetUserTraffic(p *ResetUserTrafficParams, err *error) error {
+func (s *PluginImplServer) ResetUserTraffic(p *ResetUserTrafficParams, err *error) error {
 	*err = s.core.ResetUserTraffic(p)
 	return nil
 }
-func (c *PluginClient) ResetUserTraffic(p *ResetUserTrafficParams) (err error) {
+func (c *PluginImplClient) ResetUserTraffic(p *ResetUserTrafficParams) (err error) {
 	return c.call("ResetUserTraffic", p, &err)
 }
 
@@ -64,10 +64,10 @@ type DelUsersParams struct {
 	Users    []string
 }
 
-func (s *PluginServer) DelUsers(params *DelUsersParams, err *error) error {
+func (s *PluginImplServer) DelUsers(params *DelUsersParams, err *error) error {
 	*err = s.core.DelUsers(params)
 	return nil
 }
-func (c *PluginClient) DelUsers(params *DelUsersParams) (err error) {
+func (c *PluginImplClient) DelUsers(params *DelUsersParams) (err error) {
 	return c.call("DelUsers", params, &err)
 }

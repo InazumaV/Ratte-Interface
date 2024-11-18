@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-var c *Client
+var c *PluginClient
 
 func init() {
 	cli, err := NewClient(nil, exec.Command("./server_test_impl/server_test_impl"))

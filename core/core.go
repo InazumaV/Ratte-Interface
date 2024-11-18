@@ -29,37 +29,37 @@ type Core interface {
 	Type() string
 }
 
-type Client struct {
+type PluginClient struct {
 	Core
 	*baseplugin.Client
 }
 
-func (c *Client) Close() error {
+func (c *PluginClient) Close() error {
 	defer c.Client.Close()
 	return c.Core.Close()
 }
 
-func NewClient(l hclog.Logger, cmd *exec.Cmd) (client *Client, err error) {
+func NewClient(l hclog.Logger, cmd *exec.Cmd) (client *PluginClient, err error) {
 	pc, obj, err := baseplugin.NewClient(PluginName, cmd, l, NewPlugin(nil), HandshakeConfig)
 	if err != nil {
 		return nil, err
 	}
-	return &Client{
+	return &PluginClient{
 		Client: pc,
 		Core:   obj.(Core),
 	}, nil
 }
 
-type Server struct {
+type PluginServer struct {
 	*baseplugin.Server
 }
 
-func NewServer(l hclog.Logger, c Core) (*Server, error) {
+func NewServer(l hclog.Logger, c Core) (*PluginServer, error) {
 	s, err := baseplugin.NewServer(PluginName, l, HandshakeConfig, NewPlugin(c))
 	if err != nil {
 		return nil, err
 	}
-	return &Server{Server: s}, nil
+	return &PluginServer{Server: s}, nil
 }
 
 type Plugin struct {
@@ -71,24 +71,24 @@ func NewPlugin(c Core) *Plugin {
 }
 
 func (p *Plugin) Server(_ *plugin.MuxBroker) (interface{}, error) {
-	return &PluginServer{core: p.c}, nil
+	return &PluginImplServer{core: p.c}, nil
 }
 
 func (_ *Plugin) Client(_ *plugin.MuxBroker, c *rpc.Client) (interface{}, error) {
-	return &PluginClient{c: c}, nil
+	return &PluginImplClient{c: c}, nil
 }
 
-type PluginServer struct {
+type PluginImplServer struct {
 	core Core
 }
 
-var _ Core = (*PluginClient)(nil)
+var _ Core = (*PluginImplClient)(nil)
 
-type PluginClient struct {
+type PluginImplClient struct {
 	c *rpc.Client
 }
 
-func (c *PluginClient) call(method string, args interface{}, reply interface{}) error {
+func (c *PluginImplClient) call(method string, args interface{}, reply interface{}) error {
 	return c.c.Call("Plugin."+method, args, reply)
 }
 
@@ -97,11 +97,11 @@ type StartParams struct {
 	Config   []byte
 }
 
-func (s *PluginServer) Start(p *StartParams, err *error) error {
+func (s *PluginImplServer) Start(p *StartParams, err *error) error {
 	*err = s.core.Start(p.DataPath, p.Config)
 	return nil
 }
-func (c *PluginClient) Start(dataPath string, config []byte) (err error) {
+func (c *PluginImplClient) Start(dataPath string, config []byte) (err error) {
 	err2 := c.call("Start", &StartParams{
 		DataPath: dataPath,
 		Config:   config,
@@ -112,11 +112,11 @@ func (c *PluginClient) Start(dataPath string, config []byte) (err error) {
 	return nil
 }
 
-func (s *PluginServer) Close(_ interface{}, err *error) error {
+func (s *PluginImplServer) Close(_ interface{}, err *error) error {
 	*err = s.core.Close()
 	return nil
 }
-func (c *PluginClient) Close() (err error) {
+func (c *PluginImplClient) Close() (err error) {
 	err2 := c.call("Close", new(interface{}), &err)
 	if err2 != nil {
 		return err
@@ -124,20 +124,20 @@ func (c *PluginClient) Close() (err error) {
 	return nil
 }
 
-func (s *PluginServer) Protocols(_ interface{}, rsp *[]string) error {
+func (s *PluginImplServer) Protocols(_ interface{}, rsp *[]string) error {
 	*rsp = s.core.Protocols()
 	return nil
 }
-func (c *PluginClient) Protocols() (ps []string) {
+func (c *PluginImplClient) Protocols() (ps []string) {
 	_ = c.call("Protocols", new(interface{}), &ps)
 	return ps
 }
 
-func (s *PluginServer) Type(_ interface{}, t *string) error {
+func (s *PluginImplServer) Type(_ interface{}, t *string) error {
 	*t = s.core.Type()
 	return nil
 }
-func (c *PluginClient) Type() (t string) {
+func (c *PluginImplClient) Type() (t string) {
 	_ = c.call("Type", new(interface{}), &t)
 	return t
 }

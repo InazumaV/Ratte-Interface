@@ -16,11 +16,11 @@ type AddNodeParams struct {
 	ExpandOptions []byte
 }
 
-func (s *PluginServer) AddNode(params *AddNodeParams, err *error) error {
+func (s *PluginImplServer) AddNode(params *AddNodeParams, err *error) error {
 	*err = s.core.AddNode(params)
 	return nil
 }
-func (c *PluginClient) AddNode(params *AddNodeParams) (err error) {
+func (c *PluginImplClient) AddNode(params *AddNodeParams) (err error) {
 	err2 := c.call("AddNode", params, &err)
 	if err2 != nil {
 		return err2
@@ -28,12 +28,12 @@ func (c *PluginClient) AddNode(params *AddNodeParams) (err error) {
 	return
 }
 
-func (s *PluginServer) DelNode(name string, err *error) error {
+func (s *PluginImplServer) DelNode(name string, err *error) error {
 	*err = s.core.DelNode(name)
 	return nil
 }
 
-func (c *PluginClient) DelNode(name string) (err error) {
+func (c *PluginImplClient) DelNode(name string) (err error) {
 	err2 := c.call("DelNode", name, &err)
 	if err2 != nil {
 		return err2
