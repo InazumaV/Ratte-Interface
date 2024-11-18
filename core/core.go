@@ -1,8 +1,11 @@
 package core
 
 import (
+	"github.com/Yuzuki616/Ratte-Interface/baseplugin"
+	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-plugin"
 	"net/rpc"
+	"os/exec"
 )
 
 const PluginName = "ratte-core"
@@ -24,6 +27,39 @@ type Core interface {
 	DelUsers(params *DelUsersParams) error
 	Protocols() []string
 	Type() string
+}
+
+type Client struct {
+	Core
+	*baseplugin.Client
+}
+
+func (c *Client) Close() error {
+	defer c.Client.Close()
+	return c.Core.Close()
+}
+
+func NewClient(l hclog.Logger, cmd *exec.Cmd) (client *Client, err error) {
+	pc, obj, err := baseplugin.NewClient(PluginName, cmd, l, NewPlugin(nil), HandshakeConfig)
+	if err != nil {
+		return nil, err
+	}
+	return &Client{
+		Client: pc,
+		Core:   obj.(Core),
+	}, nil
+}
+
+type Server struct {
+	*baseplugin.Server
+}
+
+func NewServer(l hclog.Logger, c Core) (*Server, error) {
+	s, err := baseplugin.NewServer(PluginName, l, HandshakeConfig, NewPlugin(c))
+	if err != nil {
+		return nil, err
+	}
+	return &Server{Server: s}, nil
 }
 
 type Plugin struct {
@@ -76,7 +112,7 @@ func (c *PluginClient) Start(dataPath string, config []byte) (err error) {
 	return nil
 }
 
-func (s *PluginServer) Close(err *error) error {
+func (s *PluginServer) Close(_ interface{}, err *error) error {
 	*err = s.core.Close()
 	return nil
 }
