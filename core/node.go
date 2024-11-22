@@ -2,13 +2,15 @@ package core
 
 import "github.com/Yuzuki616/Ratte-Interface/params"
 
+type NodeInfo params.NodeInfo
+
 type TlsOptions struct {
 	CertPath string
 	KeyPath  string
 }
 
 type AddNodeParams struct {
-	NodeInfo      params.NodeInfo
+	NodeInfo      *NodeInfo
 	TlsOptions    TlsOptions
 	ExpandOptions []byte
 }
