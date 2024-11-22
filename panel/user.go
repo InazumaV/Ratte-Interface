@@ -34,11 +34,11 @@ func (g *GetUserListRsp) GetHash() string {
 	return hex.EncodeToString(s[:])
 }
 
-func (s *PluginServer) GetUserList(id int, r *GetUserListRsp) error {
+func (s *PluginImplServer) GetUserList(id int, r *GetUserListRsp) error {
 	*r = *s.p.GetUserList(id)
 	return nil
 }
-func (c *PluginClient) GetUserList(id int) (r *GetUserListRsp) {
+func (c *PluginImplClient) GetUserList(id int) (r *GetUserListRsp) {
 	r = &GetUserListRsp{}
 	err := c.call("GetUserList", id, r)
 	if err != nil {
@@ -58,11 +58,11 @@ type UserTrafficInfo struct {
 	Download int64
 }
 
-func (s *PluginServer) ReportUserTraffic(p *ReportUserTrafficParams, err *error) error {
+func (s *PluginImplServer) ReportUserTraffic(p *ReportUserTrafficParams, err *error) error {
 	*err = s.p.ReportUserTraffic(p)
 	return nil
 }
-func (c *PluginClient) ReportUserTraffic(p *ReportUserTrafficParams) (err error) {
+func (c *PluginImplClient) ReportUserTraffic(p *ReportUserTrafficParams) (err error) {
 	err2 := c.call("ReportUserTraffic", p, &err)
 	if err2 != nil {
 		return err2

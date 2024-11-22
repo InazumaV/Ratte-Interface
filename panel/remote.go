@@ -18,11 +18,11 @@ type AddRemoteRsp struct {
 	Err      error
 }
 
-func (s *PluginServer) AddRemote(params *AddRemoteParams, r *AddRemoteRsp) error {
+func (s *PluginImplServer) AddRemote(params *AddRemoteParams, r *AddRemoteRsp) error {
 	*r = *s.p.AddRemote(params)
 	return nil
 }
-func (c *PluginClient) AddRemote(params *AddRemoteParams) (r *AddRemoteRsp) {
+func (c *PluginImplClient) AddRemote(params *AddRemoteParams) (r *AddRemoteRsp) {
 	r = &AddRemoteRsp{}
 	err := c.call("AddRemote", params, r)
 	if err != nil {
@@ -31,11 +31,11 @@ func (c *PluginClient) AddRemote(params *AddRemoteParams) (r *AddRemoteRsp) {
 	return
 }
 
-func (s *PluginServer) DelRemote(id int, _ any) {
+func (s *PluginImplServer) DelRemote(id int, _ any) {
 	_ = s.p.DelRemote(id)
 }
 
-func (c *PluginClient) DelRemote(id int) error {
+func (c *PluginImplClient) DelRemote(id int) error {
 	err := c.call("DelRemote", id, new(any))
 	if err != nil {
 		return err
