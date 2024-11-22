@@ -12,7 +12,7 @@ const (
 	Tls   = 1
 )
 
-type NodeInfo params.CommonNodeInfo
+type NodeInfo params.NodeInfo
 
 func (i *NodeInfo) TlsType() int {
 	switch i.Type {

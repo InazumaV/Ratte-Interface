@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-type CommonNodeInfo struct {
+type NodeInfo struct {
 	Type        string
 	VMess       *VMessNode
 	VLess       *VLessNode
@@ -16,7 +16,7 @@ type CommonNodeInfo struct {
 	ExpandParams
 }
 
-func (n *CommonNodeInfo) String() string {
+func (n *NodeInfo) String() string {
 	switch n.Type {
 	case "VMess":
 		return fmt.Sprintf("VMess: %v", n.VMess)
@@ -33,7 +33,7 @@ func (n *CommonNodeInfo) String() string {
 	}
 }
 
-type CommonNode struct {
+type CommonNodeParams struct {
 	Name          string
 	Host          string
 	Port          string
@@ -46,7 +46,7 @@ type CommonNode struct {
 }
 
 type HysteriaNode struct {
-	CommonNode
+	CommonNodeParams
 	UpMbps   int
 	DownMbps int
 	Obfs     string
@@ -54,7 +54,7 @@ type HysteriaNode struct {
 
 // VMessNode is vmess node info
 type VMessNode struct {
-	CommonNode
+	CommonNodeParams
 	TlsType         int
 	Network         string
 	ServerName      string
@@ -64,7 +64,7 @@ type VMessNode struct {
 
 // VLessNode is vless node info
 type VLessNode struct {
-	CommonNode
+	CommonNodeParams
 	TlsType         int
 	Flow            string
 	Network         string
@@ -89,17 +89,17 @@ type RealityConfig struct {
 }
 
 type ShadowsocksNode struct {
-	CommonNode
+	CommonNodeParams
 	Cipher    string `json:"cipher"`
 	ServerKey string `json:"server_key"`
 }
 
-type TrojanNode CommonNode
+type TrojanNode CommonNodeParams
 
 type OtherNode struct {
 	Name    string
 	TlsType int
-	CommonNode
+	CommonNodeParams
 }
 
 type LimitOptions struct {
