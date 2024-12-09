@@ -1,4 +1,4 @@
-module github.com/Yuzuki616/Ratte-Interface
+module github.com/InazumaV/Ratte-Interface
 
 go 1.22
 
