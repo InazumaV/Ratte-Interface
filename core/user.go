@@ -1,7 +1,7 @@
 package core
 
 import (
-	params2 "github.com/Yuzuki616/Ratte-Interface/params"
+	params2 "github.com/InazumaV/Ratte-Interface/params"
 )
 
 type UserInfo params2.UserInfo

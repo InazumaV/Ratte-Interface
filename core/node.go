@@ -1,6 +1,6 @@
 package core
 
-import "github.com/Yuzuki616/Ratte-Interface/params"
+import "github.com/InazumaV/Ratte-Interface/params"
 
 type NodeInfo params.NodeInfo
 
@@ -10,6 +10,7 @@ type TlsOptions struct {
 }
 
 type AddNodeParams struct {
+	Name          string
 	NodeInfo      *NodeInfo
 	TlsOptions    TlsOptions
 	ExpandOptions []byte

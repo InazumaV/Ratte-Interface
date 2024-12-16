@@ -4,7 +4,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
-	"github.com/Yuzuki616/Ratte-Interface/params"
+	"github.com/InazumaV/Ratte-Interface/params"
 )
 
 const (

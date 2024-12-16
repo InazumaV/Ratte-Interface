@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/Yuzuki616/Ratte-Interface/core"
+	"github.com/InazumaV/Ratte-Interface/core"
 )
 
 type impl struct {

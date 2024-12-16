@@ -1,7 +1,7 @@
 package panel
 
 import (
-	"github.com/Yuzuki616/Ratte-Interface/params"
+	"github.com/InazumaV/Ratte-Interface/params"
 )
 
 type AddRemoteParams struct {

@@ -1,7 +1,7 @@
 package panel
 
 import (
-	"github.com/Yuzuki616/Ratte-Interface/baseplugin"
+	"github.com/InazumaV/Ratte-Interface/baseplugin"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-plugin"
 	"net/rpc"
