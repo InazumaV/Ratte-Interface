@@ -13,6 +13,8 @@ type NodeInfo struct {
 	Trojan      *TrojanNode
 	Hysteria    *HysteriaNode
 	Other       *OtherNode
+	Limit       LimitOptions
+	Rules       []string
 	ExpandParams
 }
 
@@ -40,8 +42,6 @@ type CommonNodeParams struct {
 	ProxyProtocol bool
 	TCPFastOpen   bool
 	EnableDNS     bool
-	Rules         []string
-	Limit         LimitOptions
 	ExpandParams
 }
 
