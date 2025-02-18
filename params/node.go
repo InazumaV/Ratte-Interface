@@ -103,7 +103,7 @@ type OtherNode struct {
 }
 
 type LimitOptions struct {
-	SpeedLimit int `json:"SpeedLimit"`
-	IPLimit    int `json:"DeviceLimit"`
-	ConnLimit  int `json:"ConnLimit"`
+	SpeedLimit uint64 `json:"SpeedLimit"`
+	IPLimit    int    `json:"DeviceLimit"`
+	ConnLimit  int    `json:"ConnLimit"`
 }
