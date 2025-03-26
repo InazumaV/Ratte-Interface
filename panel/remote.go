@@ -1,10 +1,12 @@
 package panel
 
 import (
+	"github.com/InazumaV/Ratte-Interface/common/errors"
 	"github.com/InazumaV/Ratte-Interface/params"
 )
 
 type AddRemoteParams struct {
+	Name     string
 	Baseurl  string
 	NodeId   int
 	NodeType string
@@ -20,6 +22,9 @@ type AddRemoteRsp struct {
 
 func (s *PluginImplServer) AddRemote(params *AddRemoteParams, r *AddRemoteRsp) error {
 	*r = *s.p.AddRemote(params)
+	if r.Err != nil {
+		r.Err = errors.NewStringFromErr(r.Err)
+	}
 	return nil
 }
 func (c *PluginImplClient) AddRemote(params *AddRemoteParams) (r *AddRemoteRsp) {

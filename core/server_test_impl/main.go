@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"github.com/InazumaV/Ratte-Interface/core"
 )
 
@@ -29,7 +30,7 @@ func (i *impl) ResetUserTraffic(p *core.ResetUserTrafficParams) error {
 	return nil
 }
 func (i *impl) DelUsers(params *core.DelUsersParams) error {
-	return nil
+	return errors.New("not implement")
 }
 func (i *impl) Protocols() []string {
 	return []string{

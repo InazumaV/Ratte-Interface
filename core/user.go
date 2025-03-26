@@ -1,6 +1,7 @@
 package core
 
 import (
+	"github.com/InazumaV/Ratte-Interface/common/errors"
 	params2 "github.com/InazumaV/Ratte-Interface/params"
 )
 
@@ -12,7 +13,7 @@ type AddUsersParams struct {
 }
 
 func (s *PluginImplServer) AddUsers(params *AddUsersParams, err *error) error {
-	*err = s.core.AddUsers(params)
+	*err = errors.NewStringFromErr(s.core.AddUsers(params))
 	return nil
 }
 func (c *PluginImplClient) AddUsers(p *AddUsersParams) (err error) {
@@ -52,11 +53,15 @@ type ResetUserTrafficParams struct {
 }
 
 func (s *PluginImplServer) ResetUserTraffic(p *ResetUserTrafficParams, err *error) error {
-	*err = s.core.ResetUserTraffic(p)
+	*err = errors.NewStringFromErr(s.core.ResetUserTraffic(p))
 	return nil
 }
 func (c *PluginImplClient) ResetUserTraffic(p *ResetUserTrafficParams) (err error) {
-	return c.call("ResetUserTraffic", p, &err)
+	err2 := c.call("ResetUserTraffic", p, &err)
+	if err2 != nil {
+		return err2
+	}
+	return
 }
 
 type DelUsersParams struct {
@@ -65,9 +70,13 @@ type DelUsersParams struct {
 }
 
 func (s *PluginImplServer) DelUsers(params *DelUsersParams, err *error) error {
-	*err = s.core.DelUsers(params)
+	*err = errors.NewStringFromErr(s.core.DelUsers(params))
 	return nil
 }
 func (c *PluginImplClient) DelUsers(params *DelUsersParams) (err error) {
-	return c.call("DelUsers", params, &err)
+	err2 := c.call("DelUsers", params, &err)
+	if err2 != nil {
+		return err2
+	}
+	return err
 }

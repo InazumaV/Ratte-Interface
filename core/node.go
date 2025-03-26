@@ -1,6 +1,9 @@
 package core
 
-import "github.com/InazumaV/Ratte-Interface/params"
+import (
+	"github.com/InazumaV/Ratte-Interface/common/errors"
+	"github.com/InazumaV/Ratte-Interface/params"
+)
 
 type NodeInfo params.NodeInfo
 
@@ -17,7 +20,7 @@ type AddNodeParams struct {
 }
 
 func (s *PluginImplServer) AddNode(params *AddNodeParams, err *error) error {
-	*err = s.core.AddNode(params)
+	*err = errors.NewStringFromErr(s.core.AddNode(params))
 	return nil
 }
 func (c *PluginImplClient) AddNode(params *AddNodeParams) (err error) {
@@ -29,7 +32,7 @@ func (c *PluginImplClient) AddNode(params *AddNodeParams) (err error) {
 }
 
 func (s *PluginImplServer) DelNode(name string, err *error) error {
-	*err = s.core.DelNode(name)
+	*err = errors.NewStringFromErr(s.core.DelNode(name))
 	return nil
 }
 

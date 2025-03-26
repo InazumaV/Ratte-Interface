@@ -2,6 +2,7 @@ package core
 
 import (
 	"github.com/InazumaV/Ratte-Interface/baseplugin"
+	"github.com/InazumaV/Ratte-Interface/common/errors"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-plugin"
 	"net/rpc"
@@ -98,7 +99,7 @@ type StartParams struct {
 }
 
 func (s *PluginImplServer) Start(p *StartParams, err *error) error {
-	*err = s.core.Start(p.DataPath, p.Config)
+	*err = errors.NewStringFromErr(s.core.Start(p.DataPath, p.Config))
 	return nil
 }
 func (c *PluginImplClient) Start(dataPath string, config []byte) (err error) {
@@ -113,7 +114,7 @@ func (c *PluginImplClient) Start(dataPath string, config []byte) (err error) {
 }
 
 func (s *PluginImplServer) Close(_ interface{}, err *error) error {
-	*err = s.core.Close()
+	*err = errors.NewStringFromErr(s.core.Close())
 	return nil
 }
 func (c *PluginImplClient) Close() (err error) {

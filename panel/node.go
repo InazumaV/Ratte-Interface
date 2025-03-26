@@ -4,6 +4,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
+	"github.com/InazumaV/Ratte-Interface/common/errors"
 	"github.com/InazumaV/Ratte-Interface/params"
 )
 
@@ -53,6 +54,9 @@ func (g *GetNodeInfoRsp) GetHash() string {
 
 func (s *PluginImplServer) GetNodeInfo(id int, r *GetNodeInfoRsp) error {
 	*r = *s.p.GetNodeInfo(id)
+	if r.Err != nil {
+		r.Err = errors.NewStringFromErr(r.Err)
+	}
 	return nil
 }
 

@@ -4,6 +4,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
+	"github.com/InazumaV/Ratte-Interface/common/errors"
 	"github.com/InazumaV/Ratte-Interface/params"
 )
 
@@ -36,6 +37,9 @@ func (g *GetUserListRsp) GetHash() string {
 
 func (s *PluginImplServer) GetUserList(id int, r *GetUserListRsp) error {
 	*r = *s.p.GetUserList(id)
+	if r.Err != nil {
+		r.Err = errors.NewStringFromErr(r.Err)
+	}
 	return nil
 }
 func (c *PluginImplClient) GetUserList(id int) (r *GetUserListRsp) {
@@ -59,7 +63,7 @@ type UserTrafficInfo struct {
 }
 
 func (s *PluginImplServer) ReportUserTraffic(p *ReportUserTrafficParams, err *error) error {
-	*err = s.p.ReportUserTraffic(p)
+	*err = errors.NewStringFromErr(s.p.ReportUserTraffic(p))
 	return nil
 }
 func (c *PluginImplClient) ReportUserTraffic(p *ReportUserTrafficParams) (err error) {
