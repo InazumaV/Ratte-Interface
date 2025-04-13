@@ -18,6 +18,9 @@ func NewString(text string) Error {
 }
 
 func NewStringFromErr(err error) Error {
+	if err == nil {
+		return nil
+	}
 	s := err.Error()
 	return (*StringError)(&s)
 }
