@@ -66,5 +66,5 @@ func (c *PluginImplClient) GetNodeInfo(id int) (r *GetNodeInfoRsp) {
 	if err != nil {
 		r.Err = err
 	}
-	return nil
+	return
 }

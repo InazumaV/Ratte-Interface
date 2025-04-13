@@ -1,6 +1,7 @@
 package core
 
 import (
+	"os"
 	"os/exec"
 	"testing"
 )
@@ -8,7 +9,12 @@ import (
 var c *PluginClient
 
 func init() {
-	exec.Command("go", "build", "./server_test_impl/main.go", "-o", "./server_test_impl/server_test_impl")
+	e := exec.Command("go", "build", "-C", "./server_test_impl/", "-o", "server_test_impl")
+	e.Stdout = os.Stdout
+	e.Stderr = os.Stderr
+	if err := e.Run(); err != nil {
+		panic(err)
+	}
 	cli, err := NewClient(nil, exec.Command("./server_test_impl/server_test_impl"))
 	if err != nil {
 		panic(err)
