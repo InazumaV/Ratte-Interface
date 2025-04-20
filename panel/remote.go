@@ -36,8 +36,9 @@ func (c *PluginImplClient) AddRemote(params *AddRemoteParams) (r *AddRemoteRsp) 
 	return
 }
 
-func (s *PluginImplServer) DelRemote(id int, _ any) {
+func (s *PluginImplServer) DelRemote(id int, _ *any) error {
 	_ = s.p.DelRemote(id)
+	return nil
 }
 
 func (c *PluginImplClient) DelRemote(id int) error {
