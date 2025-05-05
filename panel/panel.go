@@ -17,6 +17,7 @@ var HandshakeConfig = plugin.HandshakeConfig{
 }
 
 type Panel interface {
+	CustomMethod(method string, args any, reply *any) error
 	AddRemote(params *AddRemoteParams) *AddRemoteRsp
 	DelRemote(id int) error
 	GetNodeInfo(id int) *GetNodeInfoRsp
@@ -86,4 +87,20 @@ type PluginImplClient struct {
 
 func (c *PluginImplClient) call(method string, args interface{}, reply interface{}) error {
 	return c.c.Call("Plugin."+method, args, reply)
+}
+
+func (s *PluginImplServer) CustomMethod(method string, args any, reply *any) error {
+	return s.p.CustomMethod(method, args, reply)
+}
+
+type CustomMethodParams struct {
+	Method string
+	Args   any
+}
+
+func (c *PluginImplClient) CustomMethod(method string, args any, reply *any) error {
+	return c.call("CustomMethod", CustomMethodParams{
+		Method: method,
+		Args:   args,
+	}, reply)
 }

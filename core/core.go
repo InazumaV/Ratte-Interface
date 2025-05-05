@@ -18,6 +18,7 @@ var HandshakeConfig = plugin.HandshakeConfig{
 }
 
 type Core interface {
+	CustomMethod(method string, args any, reply *any) error
 	Start(dataPath string, config []byte) error
 	Close() error
 	AddNode(params *AddNodeParams) error
@@ -91,6 +92,25 @@ type PluginImplClient struct {
 
 func (c *PluginImplClient) call(method string, args interface{}, reply interface{}) error {
 	return c.c.Call("Plugin."+method, args, reply)
+}
+func (s *PluginImplServer) CustomMethod(method string, args any, reply *any) error {
+	return s.core.CustomMethod(method, args, reply)
+}
+
+type CustomMethodParams struct {
+	Method string
+	Args   any
+}
+
+func (c *PluginImplClient) CustomMethod(method string, args any, reply *any) error {
+	err2 := c.call("CustomMethod", CustomMethodParams{
+		Method: method,
+		Args:   args,
+	}, reply)
+	if err2 != nil {
+		return err2
+	}
+	return nil
 }
 
 type StartParams struct {
