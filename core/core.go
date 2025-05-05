@@ -93,13 +93,14 @@ type PluginImplClient struct {
 func (c *PluginImplClient) call(method string, args interface{}, reply interface{}) error {
 	return c.c.Call("Plugin."+method, args, reply)
 }
-func (s *PluginImplServer) CustomMethod(method string, args any, reply *any) error {
-	return s.core.CustomMethod(method, args, reply)
-}
 
 type CustomMethodParams struct {
 	Method string
 	Args   any
+}
+
+func (s *PluginImplServer) CustomMethod(p CustomMethodParams, reply *any) error {
+	return s.core.CustomMethod(p.Method, p.Args, reply)
 }
 
 func (c *PluginImplClient) CustomMethod(method string, args any, reply *any) error {
