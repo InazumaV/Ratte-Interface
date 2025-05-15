@@ -65,7 +65,7 @@ type VLess struct {
 
 type TlsSettings struct {
 	ServerName    string
-	AllowInsecure *bool  `json:"allow_insecure"`
+	AllowInsecure bool   `json:"allow_insecure"`
 	Fingerprint   string `json:"fingerprint"`
 }
 
@@ -76,7 +76,7 @@ type SecurityConfig struct {
 
 type RealityConfig struct {
 	ServerName   string
-	ServerPort   string
+	ServerPort   int
 	ShortId      string
 	PrivateKey   string
 	Xver         uint64
