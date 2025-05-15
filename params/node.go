@@ -1,21 +1,29 @@
 package params
 
 import (
-	"encoding/json"
 	"fmt"
 )
 
 type NodeInfo struct {
-	Type        string
-	VMess       *VMessNode
-	VLess       *VLessNode
-	Shadowsocks *ShadowsocksNode
-	Trojan      *TrojanNode
-	Hysteria    *HysteriaNode
-	Other       *OtherNode
-	Limit       LimitOptions
-	Rules       []string
 	ExpandParams
+	Type           string
+	Name           string
+	Host           string
+	Port           string
+	ProxyProtocol  bool
+	TCPFastOpen    bool
+	EnableDNS      bool
+	Security       string
+	SecurityConfig *SecurityConfig
+	Limit          LimitOptions
+	Rules          []string
+
+	VMess       *VMess
+	VLess       *VLess
+	Shadowsocks *Shadowsocks
+	Trojan      *Trojan
+	Hysteria    *Hysteria
+	Other       *Other
 }
 
 func (n *NodeInfo) String() string {
@@ -35,43 +43,25 @@ func (n *NodeInfo) String() string {
 	}
 }
 
-type CommonNodeParams struct {
-	Name          string
-	Host          string
-	Port          string
-	ProxyProtocol bool
-	TCPFastOpen   bool
-	EnableDNS     bool
+type Hysteria struct {
 	ExpandParams
-}
-
-type HysteriaNode struct {
-	CommonNodeParams
 	UpMbps   int
 	DownMbps int
 	Obfs     string
 }
 
-// VMessNode is vmess node info
-type VMessNode struct {
-	CommonNodeParams
-	TlsType         int
-	Network         string
-	ServerName      string
-	TlsSettings     TlsSettings
-	NetworkSettings json.RawMessage
+// VMess is vmess node info
+type VMess struct {
+	ExpandParams
+	Network     string
+	ServerName  string
+	TlsSettings TlsSettings
 }
 
-// VLessNode is vless node info
-type VLessNode struct {
-	CommonNodeParams
-	TlsType         int
-	Flow            string
-	Network         string
-	ServerName      string
-	RealityConfig   RealityConfig
-	TlsSettings     TlsSettings
-	NetworkSettings json.RawMessage
+// VLess is vless node info
+type VLess struct {
+	VMess
+	Flow string
 }
 
 type TlsSettings struct {
@@ -81,26 +71,27 @@ type TlsSettings struct {
 	PrivateKey string
 }
 
+type SecurityConfig struct {
+	TlsSettings   TlsSettings
+	RealityConfig RealityConfig
+}
+
 type RealityConfig struct {
-	Xver         uint64 `json:"Xver"`
-	MinClientVer string `json:"MinClientVer"`
-	MaxClientVer string `json:"MaxClientVer"`
-	MaxTimeDiff  string `json:"MaxTimeDiff"`
+	Xver         uint64
+	MinClientVer string
+	MaxClientVer string
+	MaxTimeDiff  string
 }
 
-type ShadowsocksNode struct {
-	CommonNodeParams
-	Cipher    string `json:"cipher"`
-	ServerKey string `json:"server_key"`
+type Shadowsocks struct {
+	ExpandParams
+	Cipher    string
+	ServerKey string
 }
 
-type TrojanNode CommonNodeParams
+type Trojan ExpandParams
 
-type OtherNode struct {
-	Name    string
-	TlsType int
-	CommonNodeParams
-}
+type Other ExpandParams
 
 type LimitOptions struct {
 	SpeedLimit uint64 `json:"SpeedLimit"`
