@@ -17,6 +17,7 @@ var HandshakeConfig = plugin.HandshakeConfig{
 }
 
 type Panel interface {
+	Type() string
 	CustomMethod(method string, args any, reply *any) error
 	AddRemote(params *AddRemoteParams) *AddRemoteRsp
 	DelRemote(id int) error
@@ -103,4 +104,16 @@ func (c *PluginImplClient) CustomMethod(method string, args any, reply *any) err
 		Method: method,
 		Args:   args,
 	}, reply)
+}
+
+func (s *PluginImplServer) Type() string {
+	return s.p.Type()
+}
+func (c *PluginImplClient) Type() string {
+	t := ""
+	err := c.call("Type", new(any), &t)
+	if err != nil {
+		return ""
+	}
+	return t
 }
