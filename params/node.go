@@ -9,7 +9,7 @@ type NodeInfo struct {
 	Type           string
 	Name           string
 	Host           string
-	Port           string
+	Port           int
 	ProxyProtocol  bool
 	TCPFastOpen    bool
 	EnableDNS      bool
@@ -53,9 +53,8 @@ type Hysteria struct {
 // VMess is vmess node info
 type VMess struct {
 	ExpandParams
-	Network     string
-	ServerName  string
-	TlsSettings TlsSettings
+	Network    string
+	ServerName string
 }
 
 // VLess is vless node info
