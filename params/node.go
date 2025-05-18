@@ -8,7 +8,6 @@ type NodeInfo struct {
 	ExpandParams
 	Type           string
 	Name           string
-	Host           string
 	Port           int
 	ProxyProtocol  bool
 	TCPFastOpen    bool
@@ -53,8 +52,30 @@ type Hysteria struct {
 // VMess is vmess node info
 type VMess struct {
 	ExpandParams
-	Network    string
-	ServerName string
+	NetworkSettings
+	Network string
+}
+
+type NetworkSettings struct {
+	Ws WsSettings
+}
+
+type WsSettings struct {
+	Headers         map[string]string
+	Host            string
+	Path            string
+	HeartbeatPeriod string
+}
+
+type GrpcSettings struct {
+	Authority           string
+	ServiceName         string
+	MultiMode           bool
+	UserAgent           string
+	IdleTimeout         int
+	HealthCheckTimeout  int
+	PermitWithoutStream bool
+	InitialWindowsSize  int
 }
 
 // VLess is vless node info
@@ -91,7 +112,11 @@ type Shadowsocks struct {
 	ServerKey string
 }
 
-type Trojan ExpandParams
+type Trojan struct {
+	ExpandParams
+	Host string
+	Path string
+}
 
 type Other ExpandParams
 
