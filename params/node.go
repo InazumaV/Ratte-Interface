@@ -57,7 +57,8 @@ type VMess struct {
 }
 
 type NetworkSettings struct {
-	Ws WsSettings
+	Ws   WsSettings
+	Grpc GrpcSettings
 }
 
 type WsSettings struct {
